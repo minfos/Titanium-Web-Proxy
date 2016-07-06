@@ -16,7 +16,7 @@ namespace Titanium.Web.Proxy.Network
     internal class CertificateManager : IDisposable
     {
         private const string CertCreateFormat =
-            "-ss {0} -n \"CN={1}, O={2}\" -sky {3} -cy {4} -m 120 -a sha256 -eku 1.3.6.1.5.5.7.3.1 {5}";
+            "-ss {0} -n \"CN={1}, O={2}\" -sky {3} -cy {4} -m 120 -a sha256 -eku 1.3.6.1.5.5.7.3.1 {5} -sr {6}";
 
         /// <summary>
         /// Cache dictionary
@@ -40,7 +40,7 @@ namespace Titanium.Web.Proxy.Network
             RootCertificateName = rootCertificateName;
 
             MyStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-            RootStore = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
+            RootStore = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
 
             certificateCache = new Dictionary<string, CachedCertificate>();
         }
@@ -243,7 +243,8 @@ namespace Titanium.Web.Proxy.Network
                 store.Name, certificateName, Issuer,
                 isRootCertificate ? "signature" : "exchange",
                 isRootCertificate ? "authority" : "end",
-                isRootCertificate ? "-h 1 -r" : string.Format("-pe -in \"{0}\" -is Root", RootCertificateName));
+                isRootCertificate ? "-h 1 -r" : string.Format("-pe -in \"{0}\" -is Root", RootCertificateName),
+				store.Location);
 
             return certCreatArgs;
         }
