@@ -345,9 +345,23 @@ namespace Titanium.Web.Proxy.EventArguments
 
             WebSession.Request.CancelRequest = true;
         }
-      
-        /// a generic responder method 
-        public async Task Respond(Response response)
+
+		public async Task Respond(string body, string statusCode, string statusDescription)
+		{
+			var response = new Response();
+
+			response.HttpVersion = WebSession.Request.HttpVersion;
+			response.ResponseStatusCode = statusCode;
+			response.ResponseStatusDescription = statusDescription;
+			response.ResponseBody = Encoding.ASCII.GetBytes(body);
+
+			await Respond(response);
+
+			WebSession.Request.CancelRequest = true;
+		}
+
+		/// a generic responder method 
+		public async Task Respond(Response response)
         {
             WebSession.Request.RequestLocked = true;
 
