@@ -19,6 +19,8 @@
   </metadata>
   <files>
 	<file src="bin\$configuration$\Titanium.Web.Proxy.dll" target="lib\net45"  />
+	<file src="bin\$configuration$\Titanium.Web.Proxy.pdb" target="lib\net45"  />
 	<file src="bin\$configuration$\makecert.exe"  target="content" />
+	<file src="Install.ps1" target="tools" />
   </files>
 </package>
